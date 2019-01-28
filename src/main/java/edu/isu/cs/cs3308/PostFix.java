@@ -59,18 +59,22 @@ public class PostFix {
                         {
                             if(firstCall)
                             {
-
+                                //Do nothing, illegal arg.
                             }
                             else
                             {
                                 int thiNum = Integer.parseInt(tempStringThree);
                                 String tempStringFour = stringStack.pop();
 
+                                stringStack.push(evalutae(secNum,thiNum,tempStringFour) + "");
+                                stringStack.push(tempString);
+
                             }
                         }
                         else
                         {
                             stringStack.push(evalutae(firstNum,secNum, tempStringThree) + "");
+                            firstCall = false;
                         }
                     }
                     else
