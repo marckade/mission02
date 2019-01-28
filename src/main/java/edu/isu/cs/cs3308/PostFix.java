@@ -21,7 +21,8 @@ public class PostFix {
      */
     public static int evalPostFix(String infix) {
 
-        if(infix == null)
+        // If the input is null or the trimmed string is white space.
+        if(infix == null || infix.trim().isEmpty())
         {
             return 0;
         }
@@ -37,24 +38,31 @@ public class PostFix {
                 stringStack.push(portion);
             } stringStack.reverse();
 
+            // Boolean is needed to see if this is the first call.
             boolean firstCall = true;
             while(stringStack.size() > 1)
             {
+                //Create tempstring and make it equal to the first pop.
                 String tempString;
 
                 tempString = stringStack.pop();
 
+                //If its possible to parse it, continue.
                 if(IsInt(tempString))
                 {
+                    //Create tempstring and make it equal to the second pop.
                     String tempStringTwo;
                     int firstNum = Integer.parseInt(tempString);
 
                     tempStringTwo = stringStack.pop();
+
+                    //If its possible to parse it.
                     if(IsInt(tempStringTwo))
                     {
                         String tempStringThree = stringStack.pop();
                         int secNum = Integer.parseInt(tempStringTwo);
 
+                        // If its possible to parse.
                         if(IsInt(tempStringThree))
                         {
                             if(firstCall)
@@ -97,6 +105,7 @@ public class PostFix {
 
     }
 
+    //This method will attempt to parse 
     public static boolean IsInt(String input)
     {
         try
