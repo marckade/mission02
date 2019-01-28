@@ -4,6 +4,8 @@ import edu.isu.cs.cs3308.structures.Stack;
 
 public class LinkedStack<E> implements Stack<E> {
 
+    private DoublyLinkedList<E> stack = new DoublyLinkedList<>();
+
     /**
      * Adds the provided item to the top of the stack. Note that if the item is
      * null, nothing occurs.
@@ -12,7 +14,9 @@ public class LinkedStack<E> implements Stack<E> {
      * null.
      */
     @Override
-    public void push(Object element) {
+    public void push(E element) {
+
+        stack.addFirst(element);
 
     }
 
@@ -25,7 +29,10 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public E peek() {
-        return null;
+
+        //Calls first method inside doubly linked list. It already checks for
+        //null variables there.
+        return stack.first();
     }
 
     /**
@@ -37,7 +44,8 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public E pop() {
-        return null;
+
+        return stack.removeFirst();
     }
 
     /**
@@ -45,7 +53,9 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public int size() {
-        return 0;
+
+        //Calls size method inside double linked list.
+        return stack.size();
     }
 
     /**
@@ -55,7 +65,9 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+
+        //Calls isEmpty method inside double linked list.
+        return stack.isEmpty();
     }
 
     /**
@@ -69,8 +81,20 @@ public class LinkedStack<E> implements Stack<E> {
      * is null.
      */
     @Override
-    public void transfer(Stack to) {
+    public void transfer(Stack<E> to) {
 
+        if(to == null && size() > 0)
+        {
+            //Nothing happens
+        }
+        else
+        {
+            while(stack.size() > 0)
+            {
+                E tempVariable = this.pop();
+                to.push(tempVariable);
+            }
+        }
     }
 
     /**
@@ -78,6 +102,16 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public void reverse() {
+
+        //Creates two temp stacks to transfer between in order to reverse.
+        LinkedStack tempOne = new LinkedStack<E>();
+        LinkedStack tempTwo = new LinkedStack<E>();
+
+
+        this.transfer(tempOne);
+        tempOne.transfer(tempTwo);
+        tempTwo.transfer(this);
+
 
     }
 
@@ -92,8 +126,40 @@ public class LinkedStack<E> implements Stack<E> {
      * this stack.
      */
     @Override
-    public void merge(Stack other) {
+    public void merge(Stack<E> other) {
 
+        //Checks if the other stack is null before merging.
+        if(other == null)
+        {
+            //Do nothing
+        }
+        else
+        {
+            //Creates two temp stacks to transfer between in order to reverse.
+            LinkedStack<E> tempOne = new LinkedStack<E>();
+            LinkedStack<E> tempTwo = new LinkedStack<E>();
+
+            //Transfers the stacks to reverse order originally. Prevents later problems.
+            this.transfer(tempOne);
+            other.transfer(tempTwo);
+
+            //While the second temp stack is greater than 0
+            while(tempTwo.size() > 0)
+            {
+                // Bring the first variable from tempTwo and store in a temp.
+                E tempElement = tempTwo.pop();
+
+                // Push it onto the other stack.
+                other.push(tempElement);
+                //push it onto the current stack.
+                this.push(tempElement);
+            }
+
+            //Transfer the tempOne to this stack.
+            tempOne.transfer(this);
+
+
+        }
     }
 
     /**
@@ -102,6 +168,9 @@ public class LinkedStack<E> implements Stack<E> {
      */
     @Override
     public void printStack() {
+
+        //Calls printList method from double linked list.
+        stack.printList();
 
     }
 }

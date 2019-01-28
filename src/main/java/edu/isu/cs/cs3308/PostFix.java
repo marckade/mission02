@@ -1,5 +1,7 @@
 package edu.isu.cs.cs3308;
 
+import edu.isu.cs.cs3308.structures.impl.LinkedStack;
+
 /**
  * Postfix expression evaluator.
  *
@@ -18,6 +20,28 @@ public class PostFix {
      * empty, or contains only whitespace.
      */
     public static int evalPostFix(String infix) {
-        throw new UnsupportedOperationException("Not supported yet.");
+
+        if(infix == null)
+        {
+            //Do nothing
+        }
+        else
+        {
+            LinkedStack<String> stringStack = new LinkedStack<String>();
+
+
+            //Found a source on how to make a for loop on this found at:
+            //https://www.tutorialspoint.com/java/java_string_split.htm
+            for(String portion: infix.split(""))
+            {
+                stringStack.push(portion);
+            }
+
+            
+
+
+
+
+        }
     }
 }

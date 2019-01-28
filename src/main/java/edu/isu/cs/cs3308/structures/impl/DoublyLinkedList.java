@@ -56,15 +56,19 @@ public class DoublyLinkedList<E> implements List<E> {
             {
                 // Do nothing as the element is null.
             }
+            else
+            {
+                Node<E> newNode = new Node<>(element);
+                tail.setNext(newNode);
+                newNode.setPrevious(tail);
+                tail = newNode;
+
+                size++;
+            }
         }
         else
         {
-            Node<E> newNode = new Node<>(element);
-            tail.setNext(newNode);
-            newNode.setPrevious(tail);
-            tail = newNode;
-
-            size++;
+           addFirst(element);
         }
 
     }
@@ -81,16 +85,20 @@ public class DoublyLinkedList<E> implements List<E> {
         if(element == null)
         {
             //Do nothing
+            return;
         }
         else
         {
             Node<E> newNode = new Node<>(element);
-            newNode.setPrevious(null);
-            newNode.setNext(head);
 
-            //Set previous of old head to new Node.
-            head.setPrevious(newNode);
-            head = newNode;
+            if(size > 0)
+            {
+                newNode.setPrevious(null);
+                newNode.setNext(head);
+
+                //Set previous of old head to new Node.
+                head.setPrevious(newNode);
+            }
 
             //Checks if the addFirst was the first element ot be added. If so, set tail.
             if(size == 0)
@@ -98,6 +106,7 @@ public class DoublyLinkedList<E> implements List<E> {
                 tail = newNode;
             }
 
+            head = newNode;
             size++;
 
         }
@@ -117,22 +126,37 @@ public class DoublyLinkedList<E> implements List<E> {
             // Created tempNode variable to store new head temporarily.
             Node<E> tempNode;
 
-            // the new head is in the tempNode variable.
-            tempNode = head.getNext();
 
-            //Sets tempnodes previous to old heads previous.
-            tempNode.setPrevious(head.getPrevious());
+            // the new head is in the tempNode variable.
+            if(size > 1)
+            {
+                tempNode = head.getNext();
+
+                //Sets tempNodes previous to old heads previous.
+                tempNode.setPrevious(head.getPrevious());
+            }
+            else
+            {
+                tempNode = head;
+            }
+
+
 
             // Sets next and previous of current head to null which should leave for garbage collection.
             head.setNext(null);
             head.setPrevious(null);
+
+            //Creates temp node to store the data from the node we are removing.
+            Node<E> originalNode;
+            originalNode = head;
+
 
             // Sets new head to the tempNode;
             head = tempNode;
 
             size--;
 
-            return head.getData();
+            return originalNode.getData();
         }
 
         return null;
@@ -145,7 +169,34 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public E removeLast() {
-        return null;
+
+        //Check list size to ensure the list is not empty.
+        if(size > 0)
+        {
+            // Created tempNode variable to store new head temporarily.
+            Node<E> tempNode;
+
+            // set tempNode to head.
+            tempNode = head;
+
+            //Iterate to the end of the list.
+            while(tempNode.getNext() != null)
+            {
+                tempNode = tempNode.getNext();
+            }
+
+
+
+            //Iterate size down
+            size--;
+
+            //Return tails data.
+            return tail.getData();
+        }
+        else
+        {
+            return null;
+        }
     }
 
     /**
@@ -161,6 +212,47 @@ public class DoublyLinkedList<E> implements List<E> {
     @Override
     public void insert(E element, int index) {
 
+        //If the element is null or the index is less than 0,
+        if(element == null || index < 0)
+        {
+            // Do nothing.
+        }
+        else
+        {
+            // If index is greater or equal to in size then do the end instead.
+            if(index >= size)
+            {
+                addLast(element);
+            }
+            else
+            {
+                //Create new tempNode.
+                Node<E> tempnode;
+
+                // index being 0,1,2,3, set tempnode to the head.
+                tempnode = head;
+
+                // Get index to the right place.
+                for(int i = 0; i < index - 1; i++)
+                {
+                    tempnode = tempnode.getNext();
+                }
+
+                // Create newnode with element parameter.
+                Node<E> newNode = new Node<>(element);
+
+                //Set the next for the new node equal to the tempnodes next.
+                newNode.setNext(tempnode.getNext());
+                newNode.setPrevious(tempnode);
+
+                //Set tempnodes next to the new node to complete insert.
+                tempnode.setNext(newNode);
+
+                //Iterate size
+                size++;
+            }
+
+        }
     }
 
     /**
@@ -172,7 +264,37 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public E remove(int index) {
-        return null;
+
+        if(index >= size || index < 0)
+        {
+            return null;
+        }
+        else
+        {
+
+            Node<E> tempNode;
+
+            tempNode = head;
+
+            for(int i = 0; i < index -1; i++)
+            {
+                tempNode = tempNode.getNext();
+            }
+
+            Node<E> tempNodeTwo;
+
+            tempNodeTwo = tempNode.getNext();
+
+            tempNode.setNext(tempNodeTwo.getNext());
+
+            tempNodeTwo.setNext(null);
+            tempNodeTwo.setPrevious(null);
+
+            size--;
+
+            return tempNodeTwo.getData();
+
+        }
     }
 
     /**
@@ -186,7 +308,26 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public E get(int index) {
-        return null;
+
+        if(index < 0 || index >= size)
+        {
+            return null;
+        }
+        else
+        {
+            Node<E> tempnode;
+
+            // index being 0,1,2,3
+            tempnode = head;
+
+            for(int i = 0; i < index; i++)
+            {
+                tempnode = tempnode.getNext();
+            }
+
+            return tempnode.getData();
+        }
+
     }
 
     /**
@@ -195,7 +336,13 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public int size() {
-        return 0;
+
+        if(size < 0)
+        {
+            size = 0;
+        }
+
+        return size;
     }
 
     /**
@@ -204,7 +351,13 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public boolean isEmpty() {
-        return false;
+
+        if(head == null)
+            return true;
+        else
+        {
+            return false;
+        }
     }
 
     /**
@@ -212,6 +365,18 @@ public class DoublyLinkedList<E> implements List<E> {
      */
     @Override
     public void printList() {
+
+        Node<E> tempNode;
+
+        tempNode = head;
+
+        //Iterates through the linked list and prints the data.
+        for(int i = 0; i < size; i++)
+        {
+            System.out.println(tempNode.getData());
+
+            tempNode = tempNode.getNext();
+        }
 
     }
 }
