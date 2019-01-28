@@ -14,7 +14,7 @@ public class PostFix {
      * provided string is null, empty, or only contains whitespace then return
      * 0;
      *
-     * @param postfix A string representing an postfix notation expression where
+     * @param infix A string representing an postfix notation expression where
      * each item is separated by a space.
      * @return value of the postfix express or 0 if the postfix expression is null,
      * empty, or contains only whitespace.
@@ -23,7 +23,7 @@ public class PostFix {
 
         if(infix == null)
         {
-            //Do nothing
+            return 0;
         }
         else
         {
@@ -35,13 +35,99 @@ public class PostFix {
             for(String portion: infix.split(""))
             {
                 stringStack.push(portion);
+            } stringStack.reverse();
+
+            boolean firstCall = true;
+            while(stringStack.size() > 1)
+            {
+                String tempString;
+
+                tempString = stringStack.pop();
+
+                if(IsInt(tempString))
+                {
+                    String tempStringTwo;
+                    int firstNum = Integer.parseInt(tempString);
+
+                    tempStringTwo = stringStack.pop();
+                    if(IsInt(tempStringTwo))
+                    {
+                        String tempStringThree = stringStack.pop();
+                        int secNum = Integer.parseInt(tempStringTwo);
+
+                        if(IsInt(tempStringThree))
+                        {
+                            if(firstCall)
+                            {
+
+                            }
+                            else
+                            {
+                                int thiNum = Integer.parseInt(tempStringThree);
+                                String tempStringFour = stringStack.pop();
+
+                            }
+                        }
+                        else
+                        {
+                            stringStack.push(evalutae(firstNum,secNum, tempStringThree) + "");
+                        }
+                    }
+                    else
+                    {
+                        //Do nothing. Illegal opporation.
+                    }
+                }
+                else
+                {
+                    //Do nothing. It's an illegal argument.
+                }
             }
 
-            
 
 
 
-
+            return Integer.parseInt(stringStack.pop());
         }
+
+
+    }
+
+    public static boolean IsInt(String input)
+    {
+        try
+        {
+            Integer.parseInt(input);
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    public static int evalutae(int one, int two, String operation)
+    {
+        int result = 0;
+
+        if (operation.equals("-"))
+        {
+
+            result = one - two;
+        }
+        else if(operation.equals("*"))
+        {
+            result = one * two;
+        }
+        else if(operation.equals("/"))
+        {
+            result = one / two;
+        }
+        else if(operation.equals("%"))
+        {
+            result = one % two;
+        }
+
+        return result;
     }
 }
