@@ -105,7 +105,7 @@ public class PostFix {
 
     }
 
-    //This method will attempt to parse 
+    //This method will attempt to parse the string and will return the result of the attempt.
     public static boolean IsInt(String input)
     {
         try
@@ -119,6 +119,7 @@ public class PostFix {
         }
     }
 
+    //This method will look at the non-int string and check with opporator the user is putting in. 
     public static int evalutae(int one, int two, String operation)
     {
         int result = 0;
